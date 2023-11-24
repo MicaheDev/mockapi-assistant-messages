@@ -8,6 +8,9 @@
     "start": "node index.js",
     "dev": "nodemon index.js --watch"
   },
+  "engines": {
+    "node": "18.17.0"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
