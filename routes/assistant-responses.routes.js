@@ -18,10 +18,10 @@ router.get('/:room', async (req, res) => {
   });
   
   router.post('/', async (req, res) => {
-    const { room, Q, A } = req.body;
+    const { room, Q, A, timestamp  } = req.body;
   
     try {
-      const nuevaPregunta = new AssistantResponse({ room, Q, A });
+      const nuevaPregunta = new AssistantResponse({ room, Q, A, timestamp  });
       await nuevaPregunta.save();
       res.json({ message: 'Pregunta creada exitosamente.' });
     } catch (error) {
@@ -31,13 +31,18 @@ router.get('/:room', async (req, res) => {
   
   router.put('/:id', async (req, res) => {
     const { id } = req.params;
-    const { room, Q, A, operation } = req.body;
+    const { room, Q, A, operation, timestamp } = req.body;
   
     try {
       const pregunta = await AssistantResponse.findById(id);
   
       if (!pregunta) {
         return res.status(404).json({ error: 'Pregunta no encontrada.' });
+      }
+  
+      // Actualizar el timestamp si está presente en el cuerpo de la solicitud
+      if (timestamp) {
+        pregunta.timestamp = timestamp;
       }
   
       if (operation === 'editQ') {
@@ -62,6 +67,22 @@ router.get('/:room', async (req, res) => {
       res.json({ message: 'Operaciones realizadas exitosamente.' });
     } catch (error) {
       res.status(500).json({ error: 'Error al realizar las operaciones.' });
+    }
+  });
+
+  router.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+      const result = await AssistantResponse.findByIdAndDelete(id);
+  
+      if (result) {
+        res.json({ message: 'Pregunta eliminada exitosamente.' });
+      } else {
+        res.status(404).json({ error: 'Pregunta no encontrada.' });
+      }
+    } catch (error) {
+      res.status(500).json({ error: 'Error al eliminar la pregunta.' });
     }
   });
   

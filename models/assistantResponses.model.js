@@ -8,6 +8,10 @@ const responseSchema = new mongoose.Schema({
     of: String,
   },
   A: String,
+  timestamp: {
+    type: Number,
+    required: true,  // Haciendo que el timestamp sea obligatorio
+  },
 });
 
 // Configuración para excluir los campos __v y _id en las respuestas
