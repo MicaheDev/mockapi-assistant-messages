@@ -20,9 +20,6 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 
-
-
-
 app.use("/mock-api/assistant-responses", assistantResponses);
 
 PORT = process.env.PORT;
